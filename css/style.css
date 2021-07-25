@@ -1,0 +1,39 @@
+img{
+    width: 250px;
+    height: 250px;
+  }
+  img{
+    margin-left: 20px;
+  }
+  div{
+   padding-left:50px;
+  }
+  
+  body{
+    background-color: whitesmoke;
+  }
+  
+  
+  
+  ul{
+    margin-top: 50px;
+  }
+  
+  li{
+    margin-top: 10px;
+    list-style-type: none;
+    color: rgb(158, 76, 251);
+    font-weight: bold;
+  }
+  button {
+    margin-top: 30px;
+    margin-left: 50px;
+    line-height: 60px;
+    font-weight: bold;
+    padding: 0 40px;
+    background:rgb(94, 76, 251);;
+    border: none;
+  }
+  button:hover {
+    background: rgb(255, 122, 122);
+  }
