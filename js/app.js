@@ -11,6 +11,11 @@ let leftImageIndex;
 let middleImageIndex;
 let rightImageIndex;
 Goat.all = [];
+let namesArr = [];
+
+let votesArr = [];
+
+let shownArr = [];
 
 function Goat(name, src) {
     this.name = name;
@@ -19,6 +24,7 @@ function Goat(name, src) {
     this.shown = 0;
     goats.push(this);
     Goat.all.push(this);
+    namesArr.push(this.name);
 }
 
 
@@ -47,16 +53,20 @@ function getRandomIndex() {
 
     return Math.floor(Math.random() * goats.length);
 }
-
+let repetition=[];
 function renderDivImages() {
-
     leftImageIndex = getRandomIndex();
     middleImageIndex = getRandomIndex();
     rightImageIndex = getRandomIndex();
+    repetition[leftImageIndex,middleImageIndex,rightImageIndex];
 
-    while (leftImageIndex === rightImageIndex || middleImageIndex === leftImageIndex || middleImageIndex === rightImageIndex) {
+    console.log(repetition);
+
+    while (leftImageIndex === rightImageIndex || middleImageIndex === leftImageIndex || middleImageIndex === rightImageIndex||repetition.includes(leftImageIndex)||repetition.includes( middleImageIndex)||repetition.includes(rightImageIndex)) {
         rightImageIndex = getRandomIndex();
         middleImageIndex = getRandomIndex();
+        leftImageIndex=getRandomIndex();
+       
 
     }
 
@@ -89,41 +99,132 @@ function userClick(event) {
         } else if (event.target.id === 'middle-image') {
 
             goats[middleImageIndex].votes++;
-         
+
         } else if (event.target.id === 'right-image') {
 
             goats[rightImageIndex].votes++;
-           
+
 
         } else {
+            userAttemptsCounter--;
             alert('Plase Click in imges');
         }
 
         renderDivImages();
     } else {
 
+        console.log("creat button");
+        imagesDiv.removeEventListener('click', userClick);
 
-        let button = document.createElement("button");
-        button.innerHTML = "show reslt";
+        button.textContent = "show reslt";
         let body = document.getElementsByTagName("body")[0];
         body.appendChild(button);
         button.addEventListener('click', showResult);
 
-        function showResult(event) {
-            let list = document.getElementById('results-list');
 
-            for (let i = 0; i < goats.length; i++) {
 
-                let listItem = document.createElement('li');
-
-                list.appendChild(listItem);
-
-                listItem.textContent = `${goats[i].name} has ${goats[i].votes} votes and was seen${goats[i].shown}`;
-                button.removeEventListener('click', showResult);
-            }
-        }
-        imagesDiv.removeEventListener('click', userClick);
 
     }
+
+
+
+}
+let button = document.createElement("button");
+function showResult(event) {
+
+
+
+    let list = document.getElementById('results-list');
+
+    for (let i = 0; i < goats.length; i++) {
+
+        let listItem = document.createElement('li');
+
+        list.appendChild(listItem);
+
+        listItem.textContent = `${goats[i].name} has ${goats[i].votes} votes and was seen${goats[i].shown}`;
+
+    }
+    showChart();
+    button.removeEventListener('click', showResult);
+
+}
+function showChart() {
+    for (let i = 0; i < goats.length; i++) {
+        console.log(goats[i].votes);
+        votesArr.push(goats[i].votes);
+        shownArr.push(goats[i].shown);
+
+    }
+    console.log('test');
+    const data = {
+        labels: namesArr,
+        datasets: [{
+            label: 'Votes',
+            data: votesArr,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+                'rgb(153, 102, 255)',
+                'rgb(201, 203, 207)'
+            ],
+            borderWidth: 1
+        },
+        {
+            label: 'Shown',
+            data: shownArr,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+                'rgb(153, 102, 255)',
+                'rgb(201, 203, 207)'
+            ],
+            borderWidth: 1
+        }
+
+        ]
+    };
+
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        },
+    };
+
+
+    var myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+    );
 
 }
