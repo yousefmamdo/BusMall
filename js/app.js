@@ -119,7 +119,14 @@ function userClick(event) {
         let body = document.getElementsByTagName("body")[0];
         body.appendChild(button);
         button.addEventListener('click', showResult);
-
+        for (let i = 0; i < goats.length; i++) {
+            console.log(goats[i].votes);
+            votesArr.push(goats[i].votes);
+            shownArr.push(goats[i].shown);
+            
+          }
+        pageDitales();
+        showChart();
 
 
 
@@ -129,9 +136,12 @@ function userClick(event) {
 
 }
 let button = document.createElement("button");
+
+
+
 function showResult(event) {
-    pageDitales();
-    showChart();
+   
+    
 
 
     let list = document.getElementById('results-list');
@@ -153,12 +163,12 @@ function showResult(event) {
 
 function pageDitales(){
 let stringArry =JSON.stringify(goats);
-localStorage.setItem('Goats',stringArry);
+localStorage.setItem('goats',stringArry);
 
 
 }
 function finalruslt() {
-    let data = localStorage.getItem('Goats')
+    let data = localStorage.getItem('goats');
     let parsedArr = JSON.parse(data)
 
     if (parsedArr !== null) {
@@ -166,21 +176,20 @@ function finalruslt() {
         for (let i = 0; i < parsedArr.length; i++) {
             console.log(parsedArr[i]);
             
-            new Goat(parsedArr[i].name,parsedArr[i].src);
+        let newGoat=  new Goat(parsedArr[i].name,parsedArr[i].source);
     }
 
 }}
 
-finalruslt();
 
 
 function showChart() {
-    // for (let i = 0; i < goats.length; i++) {
-    //     console.log(goats[i].votes);
-    //     votesArr.push(goats[i].votes);
-    //     shownArr.push(goats[i].shown);
+    for (let i = 0; i < goats.length; i++) {
+        console.log(goats[i].votes);
+        votesArr.push(goats[i].votes);
+        shownArr.push(goats[i].shown);
 
-    // }
+    }
     console.log('test');
     const data = {
         labels: namesArr,
@@ -253,3 +262,5 @@ function showChart() {
     );
 
 }
+
+finalruslt();
